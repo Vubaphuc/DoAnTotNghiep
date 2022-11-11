@@ -20,16 +20,15 @@ public class DataBase {
     public static List<Invoice> invoiceList = new ArrayList<>();
     // danh sách lịch sử lỗi
     public static List<History> historyList = new ArrayList<>();
+    // list hoàn thành hóa đơn khách hàng
+    public static List<CompletedInvoice> completedInvoiceList = new ArrayList<>();
     // danh sách hóa đơn oder vật liệu của Fuction
-    public static List<InvoiceMaterial> inputInvoiceMaterialList = new ArrayList<>();
-    // history xuất vật liệu của nhân viên kho cho function
-    public static List<InvoiceMaterial> historyOutMaterialList = new ArrayList<>();
-    // danh sách history Oder vật liệu của Funcion
-    public static List<InvoiceMaterial> historyInputInvoiceMaterialList = new ArrayList<>();
-    // List danh sách vật liệu nhập vào kho và lịch sử nhập kho
-    public static List<Material> historyImportMaterialList = new ArrayList<>();
-    // danh sách hàng tồn trong kho
-    public static List<Material> inventoryMaterialList = new ArrayList<>();
+    public static List<InvoiceMaterial> invoiceMaterialList = new ArrayList<>();
+
+    // danh sách input vật liệu (Material)
+    public static List<InputMaterial> inPutMaterialList = new ArrayList<>();
+    // list vật liệu
+    public static List<Material> materialList = new ArrayList<>();
 
 
     static {

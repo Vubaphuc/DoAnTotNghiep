@@ -14,7 +14,7 @@ public class Authorization {
     EmployeeSoftwareService employeeSoftwareService = new EmployeeSoftwareService();
     EmployeeWareHouseSercive employeeWareHouseSercive = new EmployeeWareHouseSercive();
 
-    // phân quyền login
+    // phân quyền login bằng type
     public void authorize(Account acc) {
         switch (acc.getType()) {
             case ADMIN:

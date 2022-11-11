@@ -41,4 +41,11 @@ public class Account {
     public void setType(Type type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        System.out.printf("Tên tài khoản: %-s \n Mật khẩu: %-s  \n Loại: %-s",userName,password,type);
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        return "";
+    }
 }

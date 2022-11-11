@@ -89,4 +89,13 @@ public class Invoice {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+
+    @Override
+    public String toString() {
+        System.out.printf("Mã hoá đơn: %-10s -  %-20s" + '\n' + "%-20s" +'\n' + "Số lượng: %-11s  -  Giá: %-30s  -  " +
+                        "Ngày nhận máy: %-21s  -  Ngày trả máy: %-15s" + '\n'+ "%-20s" + '\n',codeInvoive,customer,product,number,price,dateAdd
+                ,datePay,employee);
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        return "";
+    }
 }

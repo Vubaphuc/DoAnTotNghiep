@@ -88,7 +88,7 @@ public class InputValue {
         }
         return null;
     }
-
+    // check người dùng nhập bằng số
     public static double getInputDouble() {
         double price;
         try {
@@ -99,7 +99,7 @@ public class InputValue {
         }
         return price;
     }
-
+    // lấy 1 employee ra
     public static Employee getOneEmployee(String account) {
         for (Employee employee : DataBase.employeeList){
             if (employee.getIdNhanVien().equals(account)){
@@ -108,7 +108,7 @@ public class InputValue {
         }
         return null;
     }
-
+    // lấy ID của Employee theo ID
     public static String getIDEmployee() {
         System.out.println("Nhập ID Nhân viên");
         String idNhanVien = getString();
@@ -120,7 +120,7 @@ public class InputValue {
         }
         return getIDEmployee();
     }
-
+    // kiểm tra id nhân viên đã tồn tại hay chưa
     public static String checkGetEmployee() {
         System.out.println("Nhập ID nhân viên");
         String idNhanVien = getString();
@@ -132,26 +132,15 @@ public class InputValue {
         }
         return idNhanVien;
     }
-
-    public static String checkGetCodeInvoiceMaterial() {
+    // kiểm tra code Invoice Material đã tồn tại chưa
+    public static String checkCodeInvoiceMaterial() {
         String codeInvoice = getString();
-        for (InvoiceMaterial material : DataBase.historyInputInvoiceMaterialList){
+        for (InvoiceMaterial material : DataBase.invoiceMaterialList){
             if (material.getCodeMaterial().equals(codeInvoice)){
                 System.out.println("Code đã tồn tại");
-                return checkGetCodeInvoiceMaterial();
+                return checkCodeInvoiceMaterial();
             }
         }
         return codeInvoice;
-    }
-
-    public static String getIDMaterial() {
-        String idMaterial = getString();
-        for (Material material : DataBase.historyImportMaterialList){
-            if (material.getIdMaterial().equals(idMaterial)){
-                System.out.println("Vật liệu đã tồn tại trong kho");
-                return getIDMaterial();
-            }
-        }
-        return idMaterial;
     }
 }

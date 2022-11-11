@@ -1,184 +1,223 @@
 package services;
 
 import database.DataBase;
-import model.Employee;
-import model.History;
-import model.InvoiceMaterial;
-import model.Material;
+import model.*;
 import utils.InputValue;
+import utils.SearchHistory;
 
+import javax.xml.stream.FactoryConfigurationError;
 import java.time.LocalDate;
 import java.util.Iterator;
 
-public class EmployeeWareHouseSercive implements IService{
+public class EmployeeWareHouseSercive implements IService {
+    // màn hình chính chức năng nhân viên Kho
     public void showFunction() {
-        while (true){
-            System.out.println("1. Nhập Vật Liệu");
-            System.out.println("2. Xuất Vật Liệu");
-            System.out.println("3. History");
+        while (true) {
+            System.out.println("1. Quản lý Vật Liệu");
+            System.out.println("2. Search History");
             System.out.println("0. Quay lại");
             int choose = InputValue.getInt(1, 3);
-            if (choose == 0){
+            if (choose == 0) {
                 DataBase.employee = null;
                 break;
             }
-            switch (choose){
+            switch (choose) {
                 case 1:
-                    showAddMaterial();
+                    showMangerMaterial();
                     break;
                 case 2:
-                    showOutMaterial();
-                    break;
-                case 3:
-                    showHistory();
+                    searchHistory();
                     break;
             }
         }
     }
-
-    private void showHistory() {
-        while (true){
-            System.out.println("1. History All Nhập vật liệu");
-            System.out.println("2. History All Xuất vật liệu");
-            System.out.println("3. List Tồn Kho");
-            System.out.println("0. Quay lại");
-            int choose = InputValue.getInt(1, 3);
-            if (choose == 0){
-                break;
-            }
-            switch (choose){
-                case 1:
-                    showHistoryAddMaterial();
-                    break;
-                case 2:
-                    showHistoryOutMaterial();
-                    break;
-                case 3:
-                    showInventoryMaterial();
-                    break;
-            }
-        }
-    }
-
-
-    private void showHistoryAddMaterial() {
-        Iterator<Material> it = DataBase.historyImportMaterialList.iterator();
-        while (it.hasNext()){
-            Material material = it.next();
-            System.out.println(material.toString());
-        }
-    }
-
-    private void showHistoryOutMaterial() {
-        Iterator<Material> it = DataBase.inventoryMaterialList.iterator();
-        while (it.hasNext()){
-            Material material = it.next();
-            System.out.println(material.toString());
-        }
-    }
-
-    private void showInventoryMaterial() {
-        Iterator<Material> it = DataBase.inventoryMaterialList.iterator();
-        while (it.hasNext()){
-            Material material = it.next();
-            System.out.println(material.toString());
-        }
-    }
-
-    private void showAddMaterial(){
-        while (true){
-            System.out.println("1. Thêm Vật liệu mới");
-            System.out.println("2. Thêm số lượng vật liệu");
+    // màn hình chức năng quản lý vật liệu
+    private void showMangerMaterial() {
+        while (true) {
+            System.out.println("1. Nhập Vật Liệu");
+            System.out.println("2. Xuất Vật Liệu");
+            System.out.println("3. Danh sách Vật liệu tồn kho");
             System.out.println("0. Quay lại");
             int choose = InputValue.getInt(1, 2);
-            if (choose == 0){
+            if (choose == 0) {
                 break;
             }
-            switch (choose){
+            switch (choose) {
                 case 1:
-                    showAddMaterialNew();
+                    inputMaterial();
                     break;
                 case 2:
-                    showAddMaterialOld();
+                    getMaterialByCodeInvoiceMaterial();
+                    break;
+                case 3:
+                    materialList();
                     break;
             }
         }
     }
-
-
-    private void showAddMaterialNew() {
+    // chức năng input Material
+    private void inputMaterial(){
         System.out.println("Nhập ID Vật liệu");
-        String idMaterial = InputValue.getIDMaterial();
+        String idMaterial = InputValue.getString();
+        for (InputMaterial inputMaterial : DataBase.inPutMaterialList){
+            if (inputMaterial.getMaterial().getIdMaterial().equals(idMaterial)){
+                inputMaterialOld(idMaterial);
+            }
+            else {
+                inputMaterialNew(idMaterial);
+            }
+        }
+
+
+
+    }
+    // input material old
+    private void inputMaterialOld(String idMaterial) {
+        for (InputMaterial inputMaterial : DataBase.inPutMaterialList ){
+            if (inputMaterial.getMaterial().getIdMaterial().equals(idMaterial)){
+                System.out.println("Số lượng thêm vào");
+                int amount = InputValue.getInputInt();
+                inputMaterial.getMaterial().setAmount((inputMaterial.getMaterial().getAmount() + amount));
+                inputMaterial.setDayInput(LocalDate.now());
+            }
+        }
+    }
+    // input material new
+    private void inputMaterialNew(String idMaterial) {
         System.out.println("Nhập tên vật liệu");
         String nameMaterial = InputValue.getString();
         System.out.println("Nhập số lượng");
         int amount = InputValue.getInputInt();
-        Employee employee = DataBase.employee;
-        LocalDate dayImport = LocalDate.now();
-        Material material = new Material(idMaterial,nameMaterial,amount,dayImport,employee);
-        DataBase.historyImportMaterialList.add(material);
-        DataBase.inventoryMaterialList.add(material);
-
+        Material material = new Material(idMaterial,nameMaterial,amount);
+        DataBase.materialList.add(material);
+        LocalDate dayInput = LocalDate.now();
+        InputMaterial inputMaterial = new InputMaterial(material,dayInput);
+        DataBase.inPutMaterialList.add(inputMaterial);
 
     }
 
-    private void showAddMaterialOld(){
-        System.out.println("Nhập ID Vật liệu");
-        String idMaterial = getIDMaterial();
-        System.out.println("Nhập số lượng thêm");
-        int amount = InputValue.getInputInt();
-        Iterator<Material> it1 = DataBase.historyImportMaterialList.iterator();
-        while (it1.hasNext()){
-            Material material1 = it1.next();
-            if (material1.getIdMaterial().equals(idMaterial)){
-                material1.setAmount((material1.getAmount()+amount));
-                System.out.println("Cập nhật thành  công");
-            }
-        }
-        Iterator<Material> it2 = DataBase.inventoryMaterialList.iterator();
-        while (it2.hasNext()){
-            Material material2 = it2.next();
-            if (material2.getIdMaterial().equals(idMaterial)){
-                material2.setAmount((material2.getAmount()+amount));
-                return;
-            }
-        }
-        System.out.println("Không tìm thấy Mã vật liệu nào");
-    }
-
-    private String getIDMaterial(){
-        String idMaterial = InputValue.getString();
-        for (Material material : DataBase.historyImportMaterialList){
-            if (material.getIdMaterial().equals(idMaterial)){
-                return idMaterial;
-            }
-        }
-        System.out.println("Không tìm thấy thấy ID vật liệu nào");
-        return getIDMaterial();
-    }
-    private void showOutMaterial() {
-        System.out.println("Nhập Mã Hóa đơn Oder xuất Vật liệu");
+    // lấy material bằng code invoice material
+    private void getMaterialByCodeInvoiceMaterial() {
+        System.out.println("Nhập Code Invoice Material");
         String codeInvoice = InputValue.getString();
-        String idMaterial = null;
-        int quanliti = 0;
-        Iterator<InvoiceMaterial> it1 = DataBase.inputInvoiceMaterialList.iterator();
-        while (it1.hasNext()){
-            InvoiceMaterial invoiceMaterial1 = it1.next();
-            if (invoiceMaterial1.getCodeMaterial().equals(codeInvoice)){
-                quanliti = invoiceMaterial1.getAmount();
-                idMaterial = invoiceMaterial1.getIdMaterial();
-                DataBase.historyOutMaterialList.add(invoiceMaterial1);
-                it1.remove();
+        for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
+            if (DataBase.invoiceMaterialList.isEmpty()){
+                System.out.println("Không còn vật liệu trong kho");
+            }
+            if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
+                System.out.println(invoiceMaterial.toString());
+                while (true){
+                    System.out.println("1. Hoàn thành Hóa đơn");
+                    System.out.println("0. Quay lại");
+                    int choose = InputValue.getInt(0, 1);
+                    switch (choose){
+                        case 0:
+                            break;
+                        case 1:
+                            invoiceCompleted(codeInvoice);
+                            minusAmountMaterial(codeInvoice);
+                            break;
+                    }
+                }
             }
         }
-        Iterator<Material> it2 = DataBase.inventoryMaterialList.iterator();
-        while (it2.hasNext()){
-            Material invoiceMaterial2 = it2.next();
-            if (invoiceMaterial2.getIdMaterial().equals(idMaterial)){
-               invoiceMaterial2.setAmount((invoiceMaterial2.getAmount()-quanliti));
-                return;
-            }
-        }
-        System.out.println("Không tìm thấy hóa đơn Oder vật liệu nào!");
     }
+    // trừ sso lượng trong kho
+    private void minusAmountMaterial(String codeInvoice) {
+        String idMaterial = getIDMaterial(codeInvoice);
+        int amount = getAmountMaterial(codeInvoice);
+        for (InputMaterial inputMaterial : DataBase.inPutMaterialList){
+            if (DataBase.inPutMaterialList.isEmpty()){
+                System.out.println("Không còn vật liệu trong kho");
+            }
+           if (inputMaterial.getMaterial().getIdMaterial().equals(idMaterial)){
+               inputMaterial.getMaterial().setAmount((inputMaterial.getMaterial().getAmount() - amount));
+           }
+        }
+    }
+    // lấy sso lượng material ra
+    private int getAmountMaterial(String codeInvoice) {
+        for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
+            if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
+                return invoiceMaterial.getAmountOder();
+            }
+        }
+        return getAmountMaterial(codeInvoice);
+    }
+
+    // lấy ID material trong invoice Material list ra
+    private String getIDMaterial(String codeInvoice) {
+        for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
+            if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
+                return invoiceMaterial.getMaterial().getIdMaterial();
+            }
+        }
+        return getIDMaterial(codeInvoice);
+    }
+
+    // chức năng hoàn thành hóa đơn oder Material. lưu thông tin cuối cùng
+    private void invoiceCompleted(String codeInvoice){
+        for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
+            if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
+                Employee employee = DataBase.employee;
+                LocalDate dayGet = LocalDate.now();
+                invoiceMaterial.setEmployeeWareHouse(employee);
+                invoiceMaterial.setDayget(dayGet);
+            }
+        }
+    }
+    // in ra material list
+    private void materialList() {
+        if (DataBase.materialList.isEmpty()){
+            System.out.println("Không còn vật liệu trong kho");
+        }
+        for (Material material : DataBase.materialList){
+            if (material.getAmount() > 0){
+                System.out.println(material.toString());
+            }
+        }
+    }
+    // chức năng tìm kiếm lịch sử
+    private void searchHistory() {
+        while (true) {
+            System.out.println("1. Search History Invoice Material");
+            System.out.println("2. Search History Input Material");
+            System.out.println("0. Quay lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0) {
+                break;
+            }
+            switch (choose) {
+                case 1:
+                    historyInvoiceMaterial();
+                    break;
+                case 2:
+                    SearchHistory.searchAll(DataBase.inPutMaterialList);
+                    break;
+            }
+        }
+    }
+
+    //  lịch sử invoice Material
+    private void historyInvoiceMaterial() {
+        while (true) {
+            System.out.println("1. Search By Code");
+            System.out.println("2. Search All Invoice Material");
+            System.out.println("0. Quay lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0) {
+                break;
+            }
+            switch (choose) {
+                case 1:
+                    SearchHistory.searchInvoiceOderMaterialByCode();
+                    break;
+                case 2:
+                    SearchHistory.searchAll(DataBase.invoiceMaterialList);
+                    break;
+            }
+        }
+    }
+
+
 }

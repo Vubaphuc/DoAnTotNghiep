@@ -10,7 +10,7 @@ import validation.Authorization;
 public class Login {
     Authentication authentication = new Authentication();
     Authorization authorization = new Authorization();
-
+    // màn hình login chính
     public void showLogin() {
         while (true) {
             System.out.println("Nhập tài khoản");
@@ -23,7 +23,7 @@ public class Login {
             }
 
             Account acc = authentication.login(account, password);
-
+            // kiểm tài khoản nếu tồn tại thì cho phép đăng nhập
             if (acc == null) {
                 System.out.println("Bạn đã nhập sai tài khoản hoặc mật khẩu!!! vui lòng nhập lại ");
             } else {
