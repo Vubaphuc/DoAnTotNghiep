@@ -42,6 +42,7 @@ public class DataBase {
         employees.setFullName("admin");
         employees.setType(Type.ADMIN);
         employeeList.add(employees);
+
         Employee employees1 = new Employee("1","A",Type.NHANVIENWIP);
         Employee employees2 = new Employee("2","B",Type.NHANVIENSUAFONT);
         Employee employees3 = new Employee("3","C",Type.NHANVIENSUAPHANMEM);
@@ -70,12 +71,6 @@ public class DataBase {
         accountsList.add(admin5);
         accountsList.add(admin6);
         accountsList.add(admin7);
-
-
-
-
-
-
     }
     public static Employee employee;
 }
