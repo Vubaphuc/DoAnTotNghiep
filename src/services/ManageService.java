@@ -64,12 +64,21 @@ public class ManageService implements IService {
 
     public void showAddAcc() {
         String userName = InputValue.getIDEmployee();
+        if (userName == null){
+            System.out.println("Nhân viên không tồn tại");
+            return;
+        }
         System.out.println("Nhập Mật Khẩu");
         String password = InputValue.getString();
-        System.out.println("Nhập loại nhân viên");
-        Type type = inputType();
-        Account account = new Account(userName, password, type);
-        DataBase.accountsList.add(account);
+        boolean ketQua = InputValue.checkUsername(userName);
+        if (ketQua == true){
+            System.out.println("Tài khoản đã tồn tại");
+            return;
+        }
+        if (ketQua == false){
+            Account account = new Account(userName, password);
+            DataBase.accountsList.add(account);
+        }
     }
 
     private void changeWorkEmployee() {
@@ -191,13 +200,33 @@ public class ManageService implements IService {
             }
             switch (choose) {
                 case 1:
-                    SearchHistory.searchCustomerByID();
+                    searchCustomerByID();
                     break;
                 case 2:
                     SearchHistory.searchCustomerByName();
                     break;
                 case 3:
                     SearchHistory.searchAll(DataBase.invoiceList);
+                    break;
+            }
+        }
+    }
+
+    private void searchCustomerByID(){
+        while (true){
+            System.out.println("1. Search By ID Customer");
+            System.out.println("2. Search By Code Invoice");
+            System.out.println("0. Quay Lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0){
+                break;
+            }
+            switch (choose){
+                case 1:
+                    SearchHistory.searchCustomerByID();
+                    break;
+                case 2:
+                    SearchHistory.searchCustomerByCodeInvoice();
                     break;
             }
         }

@@ -1,6 +1,7 @@
 package validation;
 
 import model.Account;
+import model.Employee;
 import services.*;
 
 
@@ -15,8 +16,8 @@ public class Authorization {
     EmployeeWareHouseSercive employeeWareHouseSercive = new EmployeeWareHouseSercive();
 
     // phân quyền login bằng type
-    public void authorize(Account acc) {
-        switch (acc.getType()) {
+    public void authorize(Employee employee) {
+        switch (employee.getType()) {
             case ADMIN:
                 adminService.showFunction();
                 break;

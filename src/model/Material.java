@@ -41,7 +41,7 @@ public class Material {
 
     @Override
     public String toString() {
-        System.out.printf("ID Vật Liệu: %-10s  -  Tên Vật Liệu: %-20s  -  Sô Lượng: %-10s ",idMaterial,nameMaterial,amount);
+        System.out.printf("ID Vật Liệu: %-10s  -  Tên Vật Liệu: %-20s  -  Sô Lượng: %-10s ",idMaterial,nameMaterial,amount + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

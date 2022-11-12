@@ -80,9 +80,26 @@ public class ReceptionistService {
         String address = InputValue.getString();
         System.out.println("Nhập số điện thoại khách hàng");
         String phoneNumber = InputValue.getString();
-        Customer customer = new Customer(idCustomer, nameCustomer, address, phoneNumber);
-        DataBase.customerList.add(customer);
+        boolean checkIDCustomer = checkIDCutomer(idCustomer);
+        if (checkIDCustomer == true){
+            System.out.println("ID khách hàng đã tồn tại");
+            return;
+        }
+        if (checkIDCustomer == false){
+            Customer customer = new Customer(idCustomer, nameCustomer, address, phoneNumber);
+            DataBase.customerList.add(customer);
+        }
     }
+
+    private boolean checkIDCutomer(String idCustomer) {
+        for (Customer customer : DataBase.customerList){
+            if (customer.getIdCustomer().equals(idCustomer)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     // method hiển thị chức năng quản lý sản phẩm
     private void showManagerByProduct() {
         while (true) {
@@ -185,10 +202,27 @@ public class ReceptionistService {
         String nameModel = InputValue.getString();
         System.out.println("Nhập Tên lỗi");
         String nameErrol = InputValue.getString();
-        Product product = new Product(idProduct, nameModel, nameErrol);
-        DataBase.productList.add(product);
-        LocalDate dateNow = LocalDate.now();
+        boolean checkIDProduct = checkIDProduct(idProduct);
+        if (checkIDProduct == true){
+            System.out.println("ID Product đã tồn tại");
+            return;
+        }
+        if (checkIDProduct == false){
+            Product product = new Product(idProduct, nameModel, nameErrol);
+            DataBase.productList.add(product);
+            LocalDate dateNow = LocalDate.now();
+        }
     }
+
+    private boolean checkIDProduct(String idProduct) {
+        for (Product product : DataBase.productList){
+            if (product.getIdProduct().equals(idProduct)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     // method hiển thị chức năng quản lý hóa đơn
     private void showManagerByInvoice() {
         while (true) {
@@ -257,8 +291,20 @@ public class ReceptionistService {
     // method tạo hóa đơn
     private void showCreateInvoice() {
         String codeInvoice = getCodeInvoiceNotExist();
+        if (codeInvoice == null){
+            System.out.println("Code Invoice đã tồn tại");
+            return;
+        }
         Customer customer = getByCustomer();
+        if (customer == null){
+            System.out.println("Không tìm thấy mã khách nào");
+            return;
+        }
         Product product = getByProduct();
+        if (product == null){
+            System.out.println("Không tìm thấy sản phẩm nào");
+            return;
+        }
         System.out.println("Nhập số lượng");
         int amount = InputValue.getInputInt();
         System.out.println("Nhập số tiền sửa");
@@ -266,7 +312,7 @@ public class ReceptionistService {
         LocalDate startDay = LocalDate.now();
         System.out.println("Nhập ngày trả");
         LocalDate endDay = InputValue.getInputLocalDate();
-        Employee employee = getByEmployee();
+        Employee employee = DataBase.employee;
         Invoice invoice = new Invoice(codeInvoice, customer, product, amount, price, startDay, endDay, employee);
         DataBase.invoiceList.add(invoice);
     }
@@ -308,10 +354,18 @@ public class ReceptionistService {
     }
     // method chuyển sản phẩm lỗi sang nhân viên công đoạn sau để xử lý
     private void showTransferProduct() {
-        Product product = searchProduct();
+        Product product = getByProduct();
+        if (product == null){
+            System.out.println("Không tìm mã sản phẩm nào");
+            return;
+        }
         Status status = Status.PENDING;
         Employee employeeRece = DataBase.employee;
         Employee employeeWIP = getEmployeeWIP();
+        if (employeeWIP == null){
+            System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
+            return;
+        }
         LocalDate dayInputRece = LocalDate.now();
         History history = new History(product, status, employeeRece, dayInputRece, employeeWIP);
         DataBase.historyList.add(history);
@@ -326,8 +380,7 @@ public class ReceptionistService {
                 return employee;
             }
         }
-        System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
-        return getEmployeeWIP();
+        return null;
     }
 
     // method lấy thông tin 1 sản phẩm
@@ -338,9 +391,8 @@ public class ReceptionistService {
             if (product.getIdProduct().equals(idProduct)) {
                 return product;
             }
-            System.out.println("Không tìm thấy sản phẩm nào.Vui lòng nhập lại");
         }
-        return searchProduct();
+        return null;
     }
 
 
@@ -372,6 +424,10 @@ public class ReceptionistService {
     private void changePhoneNumberCustomer() {
         System.out.println("Nhập Mã Khách hàng cần thay đổi");
         String idCustomer = InputValue.getString();
+        if (DataBase.customerList.isEmpty()){
+            System.out.println("Chưa có thông tin khách hàng nào");
+            return;
+        }
         Iterator<Customer> it = DataBase.customerList.iterator();
         while (it.hasNext()) {
             Customer customer = it.next();
@@ -389,6 +445,10 @@ public class ReceptionistService {
     private void changeAddressCustomer() {
         System.out.println("Nhập Mã Khách hàng cần thay đổi");
         String idCustomer = InputValue.getString();
+        if (DataBase.customerList.isEmpty()){
+            System.out.println("Chưa có thông tin khách hàng nào");
+            return;
+        }
         Iterator<Customer> it = DataBase.customerList.iterator();
         while (it.hasNext()) {
             Customer customer = it.next();
@@ -406,6 +466,10 @@ public class ReceptionistService {
     private void changeNameCustomer() {
         System.out.println("Nhập Mã Khách hàng cần thay đổi");
         String idCustomer = InputValue.getString();
+        if (DataBase.customerList.isEmpty()){
+            System.out.println("Chưa có thông tin khách hàng nào");
+            return;
+        }
         Iterator<Customer> it = DataBase.customerList.iterator();
         while (it.hasNext()) {
             Customer customer = it.next();
@@ -420,17 +484,6 @@ public class ReceptionistService {
         System.out.println("Không Tìm thấy khách hàng nào!");
     }
 
-    // method lấy ra thông tin 1 nhân viên lễ tân
-    private Employee getByEmployee() {
-        System.out.println("Nhập ID Nhân viên làm hóa đơn");
-        String idNhanVien = InputValue.getString();
-        for (Employee employee : DataBase.employeeList) {
-            if (employee.getIdNhanVien().equals(idNhanVien) && employee.getType() == Type.NHANVIENLETAN) {
-                return employee;
-            }
-        }
-        return getByEmployee();
-    }
     // method lấy ra mã hóa đơn
     private String getCodeInvoiceNotExist() {
         System.out.println("Nhập Mã Hóa Đơn");
@@ -438,7 +491,7 @@ public class ReceptionistService {
         for (Invoice invoice : DataBase.invoiceList) {
             if (invoice.getCodeInvoive().equals(codeInvoice)) {
                 System.out.println("Mã hóa đơn đã tồn tại. Vui lòng nhập lại");
-                return getCodeInvoiceNotExist();
+                return null;
             }
         }
         return codeInvoice;
@@ -452,8 +505,7 @@ public class ReceptionistService {
                 return product;
             }
         }
-        System.out.println("Không tìm thấy mã sản phẩm!. Vui lòng nhập lại");
-        return getByProduct();
+        return null;
     }
     // method lấy thông tin 1 khách hàng
     private Customer getByCustomer() {
@@ -464,13 +516,16 @@ public class ReceptionistService {
                 return customer;
             }
         }
-        System.out.println("Không tìm thấy mã khách hàng!. Vui lòng nhập lại");
-        return getByCustomer();
+        return null;
     }
     // method xóa 1 khách hàng theo ID khách hàng
     private void deteletCustomer() {
         System.out.println("Nhập Mã Khách hàng cần Xóa");
         String idCustomer = InputValue.getString();
+        if (DataBase.customerList.isEmpty()){
+            System.out.println("Chưa có thông tin khách hàng nào");
+            return;
+        }
         Iterator<Customer> it = DataBase.customerList.iterator();
         while (it.hasNext()) {
             Customer customer = it.next();
@@ -543,7 +598,7 @@ public class ReceptionistService {
             switch (choose) {
                 case 1:
                     // tìm theo ID khách hàng
-                    SearchHistory.searchCustomerByID();
+                    searchCustomerByID();
                     break;
                 case 2:
                     // tìm theo tên khách hàng
@@ -552,6 +607,26 @@ public class ReceptionistService {
                 case 3:
                     // in ra toàn bộ danh sách khách hàng
                     SearchHistory.searchAll(DataBase.customerList);
+                    break;
+            }
+        }
+    }
+    // tìm kiếm khách hàng bằng ID và COde
+    private void searchCustomerByID(){
+        while (true){
+            System.out.println("1. Search By ID Customer");
+            System.out.println("2. Search By Code Invoice");
+            System.out.println("0. Quay Lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0){
+                break;
+            }
+            switch (choose){
+                case 1:
+                    SearchHistory.searchCustomerByID();
+                    break;
+                case 2:
+                    SearchHistory.searchCustomerByCodeInvoice();
                     break;
             }
         }

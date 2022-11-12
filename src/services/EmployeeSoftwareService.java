@@ -59,6 +59,10 @@ public class EmployeeSoftwareService implements IService {
     private void showOutputProduct() {
         System.out.println("Nhập ID sản phẩm");
         String idProduct = InputValue.getString();
+        if (DataBase.historyList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
         for (History history : DataBase.historyList) {
             if (history.equals(idProduct)) {
                 System.out.println("Nhập vị trí lỗi");

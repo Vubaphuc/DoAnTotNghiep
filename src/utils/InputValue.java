@@ -118,7 +118,7 @@ public class InputValue {
                 return codeEmployee;
             }
         }
-        return getIDEmployee();
+        return null;
     }
     // kiểm tra id nhân viên đã tồn tại hay chưa
     public static String checkGetEmployee() {
@@ -127,7 +127,7 @@ public class InputValue {
         for (Employee employee : DataBase.employeeList){
             if (employee.getIdNhanVien().equals(idNhanVien)){
                 System.out.println("ID nhân viên đã tồn tại");
-                return checkGetEmployee();
+                return null;
             }
         }
         return idNhanVien;
@@ -138,9 +138,18 @@ public class InputValue {
         for (InvoiceMaterial material : DataBase.invoiceMaterialList){
             if (material.getCodeMaterial().equals(codeInvoice)){
                 System.out.println("Code đã tồn tại");
-                return checkCodeInvoiceMaterial();
+                return null;
             }
         }
         return codeInvoice;
+    }
+
+    public static boolean checkUsername(String userName) {
+        for (Account account : DataBase.accountsList){
+            if (account.getUserName().equals(userName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

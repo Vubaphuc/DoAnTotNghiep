@@ -58,9 +58,17 @@ public class EmployeeWIPService implements IService {
     private void showTransferProduct() {
         System.out.println("Nhập ID sản phẩm");
         String idProduct = InputValue.getString();
+        if (DataBase.historyList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
         for (History history : DataBase.historyList) {
             if (history.equals(idProduct)) {
                 Employee employeeFuncion = getEmployeeAfter();
+                if (employeeFuncion == null){
+                    System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
+                    return;
+                }
                 LocalDate dayInput = LocalDate.now();
                 history.setDayInputWIP(dayInput);
                 history.setEmployeeFuncion(employeeFuncion);
@@ -83,7 +91,6 @@ public class EmployeeWIPService implements IService {
                 return employee;
             }
         }
-        System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
-        return getEmployeeAfter();
+        return null;
     }
 }

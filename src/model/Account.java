@@ -6,16 +6,14 @@ public class Account {
     private String userName;
     private String password;
 
-    private Type type;
 
 
     public Account() {
     }
 
-    public Account(String userName, String password, Type type) {
+    public Account(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.type = type;
     }
 
     public String getUserName() {
@@ -34,17 +32,10 @@ public class Account {
         this.password = password;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
 
     @Override
     public String toString() {
-        System.out.printf("Tên tài khoản: %-s \n Mật khẩu: %-s  \n Loại: %-s",userName,password,type);
+        System.out.printf("Tên tài khoản: %s \n Mật khẩu: %s ",userName,password + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

@@ -40,7 +40,7 @@ public class Product {
 
     @Override
     public String toString() {
-        System.out.format("ID Product:  %-9s -  Tên Sản Phẩm:  %-20s  -  Lỗi:  %-30s  ",idProduct,nameProduct,nameErrol);
+        System.out.format("ID Product:  %-9s -  Tên Sản Phẩm:  %-20s  -  Lỗi:  %-30s  ",idProduct,nameProduct,nameErrol + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

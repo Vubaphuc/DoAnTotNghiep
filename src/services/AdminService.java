@@ -105,12 +105,21 @@ public class AdminService implements IService {
     // thêm 1 tài khoản mới
     public void showAddAcc() {
         String userName = InputValue.getIDEmployee();
+        if (userName == null){
+            System.out.println("Nhân viên không tồn tại");
+            return;
+        }
         System.out.println("Nhập Mật Khẩu");
         String password = InputValue.getString();
-        System.out.println("Nhập loại nhân viên");
-        Type type = inputType();
-        Account account = new Account(userName, password, type);
-        DataBase.accountsList.add(account);
+        boolean ketQua = InputValue.checkUsername(userName);
+        if (ketQua == true){
+            System.out.println("Tài khoản đã tồn tại");
+            return;
+        }
+        if (ketQua == false){
+            Account account = new Account(userName, password);
+            DataBase.accountsList.add(account);
+        }
     }
     // check loại nhân viên
     private Type inputType() {
@@ -241,6 +250,9 @@ public class AdminService implements IService {
     // thêm 1 nhân viên
     private void addEmployee() {
         String idNhanVien = InputValue.checkGetEmployee();
+        if (idNhanVien == null){
+            return;
+        }
         System.out.println("Nhập Họ và Tên Nhân viên");
         String fullNameNhanVien = InputValue.getString();
         System.out.println("Nhập loại nhân viên");
@@ -271,6 +283,7 @@ public class AdminService implements IService {
                     break;
                 case 3:
                     showSearchInvoice();
+                    break;
                 case 4:
                     showSearchEmployee();
                     break;
@@ -317,13 +330,33 @@ public class AdminService implements IService {
             }
             switch (choose) {
                 case 1:
-                    SearchHistory.searchCustomerByID();
+                    searchCustomerByID();
                     break;
                 case 2:
                     SearchHistory.searchCustomerByName();
                     break;
                 case 3:
                     SearchHistory.searchAll(DataBase.invoiceList);
+                    break;
+            }
+        }
+    }
+    // tìm kiếm khách hàng bằng ID và COde
+    private void searchCustomerByID(){
+        while (true){
+            System.out.println("1. Search By ID Customer");
+            System.out.println("2. Search By Code Invoice");
+            System.out.println("0. Quay Lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0){
+                break;
+            }
+            switch (choose){
+                case 1:
+                    SearchHistory.searchCustomerByID();
+                    break;
+                case 2:
+                    SearchHistory.searchCustomerByCodeInvoice();
                     break;
             }
         }
@@ -388,6 +421,8 @@ public class AdminService implements IService {
             }
         }
     }
+
+
     // màn hình tìm kiếm material
     private void showSearchMaterial() {
         while (true) {

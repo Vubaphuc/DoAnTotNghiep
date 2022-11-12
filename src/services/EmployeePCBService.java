@@ -83,9 +83,16 @@ public class EmployeePCBService implements IService {
     private void createInvoiceMaterial() {
         System.out.println("Nhập code hóa đơn");
         String codeInvoice = InputValue.checkCodeInvoiceMaterial();
+        if (codeInvoice == null){
+            return;
+        }
         System.out.println("Nhập ID Vật liệu");
         String idMaterial = InputValue.getString();
         Material material = getMaterial(idMaterial);
+        if (material == null){
+            System.out.println("Không có vật liệu nào");
+            return;
+        }
         Employee employee = DataBase.employee;
         System.out.println("Nhập số lượng Oder");
         int amountOder = InputValue.getInputInt();
@@ -100,8 +107,7 @@ public class EmployeePCBService implements IService {
                 return material;
             }
         }
-        System.out.println("Không có vật liệu nào");
-        return getMaterial(idMaterial);
+        return null;
     }
     // tìm kiếm lịch sử sản phẩm
     private void searchHistoryProduct() {
@@ -128,6 +134,10 @@ public class EmployeePCBService implements IService {
     private void showOutputProduct() {
         System.out.println("Nhập ID sản phẩm");
         String idProduct = InputValue.getString();
+        if (DataBase.historyList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
         for (History history : DataBase.historyList) {
             if (history.equals(idProduct)) {
                 System.out.println("Nhập vị trí lỗi");

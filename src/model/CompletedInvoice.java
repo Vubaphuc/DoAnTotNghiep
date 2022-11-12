@@ -39,7 +39,7 @@ public class CompletedInvoice {
 
     @Override
     public String toString() {
-        System.out.printf("Hóa Đơn: %-s \n Trạng thái: %-s \n Ngày: %-s",invoice,status,dayCompleted);
+        System.out.printf("Hóa Đơn: %s \n Trạng thái: %s \n Ngày: %s",invoice,status,dayCompleted+ "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

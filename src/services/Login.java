@@ -21,15 +21,24 @@ public class Login {
                 System.err.println("Chưa có tài khoản nào. Mời bạn đăng ký trước");
                 break;
             }
-
+            Employee employee = getEmployee(account);
             Account acc = authentication.login(account, password);
             // kiểm tài khoản nếu tồn tại thì cho phép đăng nhập
-            if (acc == null) {
+            if (acc == null || employee == null) {
                 System.out.println("Bạn đã nhập sai tài khoản hoặc mật khẩu!!! vui lòng nhập lại ");
             } else {
                 DataBase.employee = InputValue.getOneEmployee(account);
-                authorization.authorize(acc);
+                authorization.authorize(employee);
             }
         }
+    }
+
+    private Employee getEmployee(String account) {
+        for (Employee employee : DataBase.employeeList){
+            if (employee.getIdNhanVien().equals(account)){
+                return employee;
+            }
+        }
+        return null;
     }
 }

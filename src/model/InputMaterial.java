@@ -29,7 +29,7 @@ public class InputMaterial {
 
     @Override
     public String toString() {
-        System.out.printf("Vật Liệu: %-s \n Ngày: %-s");
+        System.out.printf("Vật Liệu: %s \n Ngày: %s",material,dayInput + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
       return "";
     }

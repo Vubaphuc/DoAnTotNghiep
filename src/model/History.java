@@ -109,7 +109,7 @@ public class History {
         System.out.printf("%-10s"+'\n' + "Trạng thái: %-20s" + '\n' +"Nhân viên nhận:    %-5s"+ '\n' + "Ngày nhận máy: %-10s" + '\n' +
                         "Nhân viên xử lý:   %-20s" + '\n' + "Ngày giao cho nhân viên: %-15s  -  Nhân viên sửa chữa: %-15s  -  Vị trí lỗi(Điểm lỗi): %-20s  -  " +
                         "Trạng thái Product: %-20s  -  Ngày trả máy: %-20s  "+'\n',product,statusRece,employeeRece,dayInputRece,
-                employeeWip,dayInputWIP,employeeFuncion,location,statusFuncion,dayInputFuncion);
+                employeeWip,dayInputWIP,employeeFuncion,location,statusFuncion,dayInputFuncion + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

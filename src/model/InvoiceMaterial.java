@@ -77,7 +77,7 @@ public class InvoiceMaterial {
 
     @Override
     public String toString() {
-        System.out.printf("Mã Hóa Đơn: %-s \n Vật Liệu: %-s \n Nhân Viên Oder: %-s \n Số Lượng Oder: %-s \n Ngày Oder: %-s \n Nhân Viên Kho: %-s \n Ngày Hoàn Thành: %-s ",codeMaterial,material,employeeFunction,amountOder,dayNhap,employeeWareHouse,dayget);
+        System.out.printf("Mã Hóa Đơn: %s \n Vật Liệu: %s \n Nhân Viên Oder: %s \n Số Lượng Oder: %s \n Ngày Oder: %s \n Nhân Viên Kho: %s \n Ngày Hoàn Thành: %s ",codeMaterial,material,employeeFunction,amountOder,dayNhap,employeeWareHouse,dayget + "\n");
         System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }

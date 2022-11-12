@@ -59,12 +59,17 @@ public class EmployeeWareHouseSercive implements IService {
     private void inputMaterial(){
         System.out.println("Nhập ID Vật liệu");
         String idMaterial = InputValue.getString();
+        if (DataBase.inPutMaterialList.isEmpty()){
+            inputMaterialNew(idMaterial);
+            return;
+        }
         for (InputMaterial inputMaterial : DataBase.inPutMaterialList){
             if (inputMaterial.getMaterial().getIdMaterial().equals(idMaterial)){
                 inputMaterialOld(idMaterial);
-            }
-            else {
+                return;
+            } else {
                 inputMaterialNew(idMaterial);
+                return;
             }
         }
 
@@ -100,10 +105,10 @@ public class EmployeeWareHouseSercive implements IService {
     private void getMaterialByCodeInvoiceMaterial() {
         System.out.println("Nhập Code Invoice Material");
         String codeInvoice = InputValue.getString();
+        if (DataBase.invoiceMaterialList.isEmpty()){
+            System.out.println("Không có hóa đơn nào");
+        }
         for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
-            if (DataBase.invoiceMaterialList.isEmpty()){
-                System.out.println("Không còn vật liệu trong kho");
-            }
             if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
                 System.out.println(invoiceMaterial.toString());
                 while (true){
@@ -125,11 +130,15 @@ public class EmployeeWareHouseSercive implements IService {
     // trừ sso lượng trong kho
     private void minusAmountMaterial(String codeInvoice) {
         String idMaterial = getIDMaterial(codeInvoice);
+        if (idMaterial == null){
+            System.out.println();
+        }
+        if (DataBase.inPutMaterialList.isEmpty()){
+            System.out.println("Không còn vật liệu trong kho");
+            return;
+        }
         int amount = getAmountMaterial(codeInvoice);
         for (InputMaterial inputMaterial : DataBase.inPutMaterialList){
-            if (DataBase.inPutMaterialList.isEmpty()){
-                System.out.println("Không còn vật liệu trong kho");
-            }
            if (inputMaterial.getMaterial().getIdMaterial().equals(idMaterial)){
                inputMaterial.getMaterial().setAmount((inputMaterial.getMaterial().getAmount() - amount));
            }
@@ -142,7 +151,7 @@ public class EmployeeWareHouseSercive implements IService {
                 return invoiceMaterial.getAmountOder();
             }
         }
-        return getAmountMaterial(codeInvoice);
+        return 0;
     }
 
     // lấy ID material trong invoice Material list ra
@@ -152,11 +161,15 @@ public class EmployeeWareHouseSercive implements IService {
                 return invoiceMaterial.getMaterial().getIdMaterial();
             }
         }
-        return getIDMaterial(codeInvoice);
+        return null;
     }
 
     // chức năng hoàn thành hóa đơn oder Material. lưu thông tin cuối cùng
     private void invoiceCompleted(String codeInvoice){
+        if (DataBase.invoiceMaterialList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
         for (InvoiceMaterial invoiceMaterial : DataBase.invoiceMaterialList){
             if (invoiceMaterial.getCodeMaterial().equals(codeInvoice)){
                 Employee employee = DataBase.employee;
