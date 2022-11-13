@@ -16,7 +16,7 @@ public class EmployeeWIPService implements IService {
     public void showFunction() {
         while (true) {
             System.out.println("1. Transfer Product");
-            System.out.println("2. Seach History Product");
+            System.out.println("2. Seach History Repair Product");
             System.out.println("0. Quay lại");
             int choose = InputValue.getInt(1, 2);
             if (choose == 0) {
@@ -28,25 +28,25 @@ public class EmployeeWIPService implements IService {
                     showTransferProduct();
                     break;
                 case 2:
-                    searchHistoryProduct();
+                    showSearchRepairProduct();
                     break;
             }
         }
     }
 
     // màn hình chứ năng tìm kiếm lịch sử
-    private void searchHistoryProduct() {
+    private void showSearchRepairProduct() {
         while (true) {
-            System.out.println("1. Search By Id");
-            System.out.println("2. Search All History");
-            System.out.println("0. Quay lại");
+            System.out.println("1. Search By ID");
+            System.out.println("2. Search All");
+            System.out.println("0. Back");
             int choose = InputValue.getInt(1, 2);
             if (choose == 0) {
                 break;
             }
             switch (choose) {
                 case 1:
-                    SearchHistory.searchProductById();
+                    SearchHistory.searchHistoryRepairProductByID();
                     break;
                 case 2:
                     SearchHistory.searchAll(DataBase.historyList);
@@ -58,13 +58,11 @@ public class EmployeeWIPService implements IService {
     private void showTransferProduct() {
         System.out.println("Nhập ID sản phẩm");
         String idProduct = InputValue.getString();
-        if (DataBase.historyList.isEmpty()){
-            System.out.println("Không có thông tin nào");
-            return;
-        }
         for (History history : DataBase.historyList) {
-            if (history.equals(idProduct)) {
-                Employee employeeFuncion = getEmployeeAfter();
+            if (history.getProduct().getIdProduct().equals(idProduct) && history.getEmployeeFuncion() == null) {
+                System.out.println("nhập ID nhân viên tiếp theo");
+                String idEmployee = InputValue.getString();
+                Employee employeeFuncion = getEmployeeAfter(idEmployee);
                 if (employeeFuncion == null){
                     System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
                     return;
@@ -72,22 +70,28 @@ public class EmployeeWIPService implements IService {
                 LocalDate dayInput = LocalDate.now();
                 history.setDayInputWIP(dayInput);
                 history.setEmployeeFuncion(employeeFuncion);
+                System.out.println("Đã chuyển Product thành công");
+            }
+            if (history.getProduct().getIdProduct().equals(idProduct) && history.getEmployeeFuncion() != null){
+                System.out.println("Sản phẩm đã được chia đến đội tiếp theo");
+                return;
+            }
+            if (!history.getProduct().getIdProduct().equals(idProduct)){
+                System.out.println("Không tìm thấy sản phẩm");
             }
         }
     }
 
     // check nhân viên viên công đoạn sau
-    private Employee getEmployeeAfter() {
-        System.out.println("Nhập ID nhân viên After");
-        String idNhanVien = InputValue.getString();
+    private Employee getEmployeeAfter(String idEmployee) {
         for (Employee employee : DataBase.employeeList) {
-            if (employee.getIdNhanVien().equals(idNhanVien) && employee.getType() == Type.NHANVIENSUAFONT) {
+            if (employee.getIdNhanVien().equals(idEmployee) && employee.getType() == Type.NHANVIENSUAFONT) {
                 return employee;
             }
-            if (employee.getIdNhanVien().equals(idNhanVien) && employee.getType() == Type.NHANVIENSUAPCB) {
+            if (employee.getIdNhanVien().equals(idEmployee) && employee.getType() == Type.NHANVIENSUAPCB) {
                 return employee;
             }
-            if (employee.getIdNhanVien().equals(idNhanVien) && employee.getType() == Type.NHANVIENSUAPHANMEM) {
+            if (employee.getIdNhanVien().equals(idEmployee) && employee.getType() == Type.NHANVIENSUAPHANMEM) {
                 return employee;
             }
         }

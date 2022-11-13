@@ -50,7 +50,6 @@ public class Customer {
     @Override
     public String toString() {
         System.out.printf("Mã khách hàng: %-20s  -  Tên khách hàng: %-20s  -  Địa chỉ: %-20s  -  Số điện thoại: %-20s ",idCustomer,nameCustomer,address,phoneNumber + "\n");
-        System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }
 }

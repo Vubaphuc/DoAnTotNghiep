@@ -3,6 +3,7 @@ package utils;
 import java.util.Iterator;
 import java.util.List;
 
+import constants.StatusInvoice;
 import database.DataBase;
 import model.*;
 
@@ -17,24 +18,6 @@ public class SearchHistory {
         }
     }
 
-    // method tìm sản phẩm theo ID Product
-    public static void searchProductById() {
-        if (DataBase.historyList.isEmpty()){
-            System.out.println("Không có thông tin nào");
-            return;
-        }
-        Iterator<History> it = DataBase.historyList.iterator();
-        System.out.println("Nhap ID product:");
-        String idProduct = InputValue.getString();
-        while (it.hasNext()) {
-            History history = it.next();
-            if (idProduct.equals(history.getProduct().getIdProduct())) {
-                System.out.println(history.toString());
-                return;
-            }
-        }
-        System.out.println("Không tìm thấy Sản phẩm nào");
-    }
 
     // Method tìm khách hàng theo ID Customer
     public static void searchCustomerByID() {
@@ -185,5 +168,88 @@ public class SearchHistory {
             }
         }
         System.out.println("Không tìm thấy khách hàng nào");
+    }
+    public static void searchHistoryRepairProductByID(){
+        if (DataBase.historyList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<History> it = DataBase.historyList.iterator();
+        System.out.println("Nhap ID product:");
+        String idProduct = InputValue.getString();
+        while (it.hasNext()) {
+            History history = it.next();
+            if (idProduct.equals(history.getProduct().getIdProduct())) {
+                System.out.println(history.toString());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy Sản phẩm nào");
+    }
+
+    public static void showRepairProductPending(Employee employee) {
+        if (DataBase.historyList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<History> it = DataBase.historyList.iterator();
+        while (it.hasNext()) {
+            History history = it.next();
+            if (history.getStatusFuncion() == null && history.getEmployeeFuncion().equals(employee)) {
+                System.out.printf("Thông Tin Sản phẩm:   %s \n Trạng Thái:   %s \n Tên Người Sửa:  %s",history.getProduct(),history.getStatusRece(),history.getEmployeeRece());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy Sản phẩm nào");
+    }
+
+    public static void searchCompletedInvoiceByCode() {
+        if (DataBase.completedInvoiceList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<CompletedInvoice> it = DataBase.completedInvoiceList.iterator();
+        System.out.println("Nhap Code Invoice");
+        String codeCompletedInvoice = InputValue.getString();
+        while (it.hasNext()) {
+            CompletedInvoice completedInvoice = it.next();
+            if (completedInvoice.getInvoice().getCodeInvoive().equals(codeCompletedInvoice)) {
+                System.out.println(completedInvoice.toString());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy hóa đơn nào");
+    }
+
+    public static void searchCompletedInvoiceByReturn() {
+        if (DataBase.completedInvoiceList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<CompletedInvoice> it = DataBase.completedInvoiceList.iterator();
+        while (it.hasNext()) {
+            CompletedInvoice completedInvoice = it.next();
+            if (completedInvoice.getStatus() == StatusInvoice.RETURN) {
+                System.out.println(completedInvoice.toString());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy hóa đơn nào");
+    }
+
+    public static void searchCompletedInvoiceByRepair() {
+        if (DataBase.completedInvoiceList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<CompletedInvoice> it = DataBase.completedInvoiceList.iterator();
+        while (it.hasNext()) {
+            CompletedInvoice completedInvoice = it.next();
+            if (completedInvoice.getStatus() == StatusInvoice.REPAIR) {
+                System.out.println(completedInvoice.toString());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy hóa đơn nào");
     }
 }

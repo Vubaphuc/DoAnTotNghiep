@@ -57,20 +57,23 @@ public class DataBase {
         employeeList.add(employees5);
         employeeList.add(employees6);
         employeeList.add(employees7);
-        Account admin1 = new Account("1","1");
-        Account admin2 = new Account("2","1");
-        Account admin3 = new Account("3","1");
-        Account admin4 = new Account("4","1");
-        Account admin5 = new Account("5","1");
-        Account admin6 = new Account("6","1");
-        Account admin7 = new Account("7","1");
-        accountsList.add(admin1);
-        accountsList.add(admin2);
-        accountsList.add(admin3);
-        accountsList.add(admin4);
-        accountsList.add(admin5);
-        accountsList.add(admin6);
-        accountsList.add(admin7);
+        Account account1 = new Account("1","1");
+        Account account2  = new Account("2","1");
+        Account account3  = new Account("3","1");
+        Account account4  = new Account("4","1");
+        Account account5  = new Account("5","1");
+        Account account6  = new Account("6","1");
+        Account account7  = new Account("7","1");
+        accountsList.add(account1);
+        accountsList.add(account2);
+        accountsList.add(account3);
+        accountsList.add(account4);
+        accountsList.add(account5);
+        accountsList.add(account6);
+        accountsList.add(account7);
+
+
+
     }
     public static Employee employee;
 }

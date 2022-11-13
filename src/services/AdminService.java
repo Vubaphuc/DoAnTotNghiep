@@ -117,6 +117,7 @@ public class AdminService implements IService {
             return;
         }
         if (ketQua == false){
+            System.out.println("Đã thêm tài khoản thành công");
             Account account = new Account(userName, password);
             DataBase.accountsList.add(account);
         }
@@ -257,26 +258,29 @@ public class AdminService implements IService {
         String fullNameNhanVien = InputValue.getString();
         System.out.println("Nhập loại nhân viên");
         Type type = inputType();
+        System.out.println("Đã thêm nhân viên thành công");
         Employee employee = new Employee(idNhanVien, fullNameNhanVien, type);
         DataBase.employeeList.add(employee);
     }
     // Search lịch sử
     private void showSearchHistory() {
         while (true) {
-            System.out.println("1. Search history Product");
+            System.out.println("1. Search history Sản Phẩm vẫn Đang Pending tại Lễ Tân");
             System.out.println("2. Search history Customer");
-            System.out.println("3. Search history Invoice");
-            System.out.println("4. Search history Employee");
-            System.out.println("5. Search history Account");
-            System.out.println("6. Search History Material");
+            System.out.println("3. Search history Pending Invoice");
+            System.out.println("4. Search History Completed Invoice");
+            System.out.println("5. Search history Employee");
+            System.out.println("6. Search history Account");
+            System.out.println("7. Search History Material");
+            System.out.println("8. Search History Repair Product");
             System.out.println("0. Quay lại");
-            int choose = InputValue.getInt(1, 6);
+            int choose = InputValue.getInt(1, 8);
             if (choose == 0) {
                 break;
             }
             switch (choose) {
                 case 1:
-                    showSearchProduct();
+                    SearchHistory.searchAll(DataBase.productList);
                     break;
                 case 2:
                     showSearchCustomer();
@@ -285,20 +289,54 @@ public class AdminService implements IService {
                     showSearchInvoice();
                     break;
                 case 4:
-                    showSearchEmployee();
+                    showSearchCompletedInvoice();
                     break;
                 case 5:
-                    showSearchAccount();
+                    showSearchEmployee();
                     break;
                 case 6:
+                    showSearchAccount();
+                    break;
+                case 7:
                     showSearchMaterial();
+                    break;
+                case 8:
+                    showSearchRepairProduct();
                     break;
 
             }
         }
     }
-    // check lịch sử product
-    private void showSearchProduct() {
+
+    private void showSearchCompletedInvoice() {
+        while (true) {
+            System.out.println("1. Search By Code Invoice");
+            System.out.println("2. Search By Return Invoice");
+            System.out.println("3. Search By Repair Invoice");
+            System.out.println("4. Search All");
+            System.out.println("0. Back");
+            int choose = InputValue.getInt(1, 4);
+            if (choose == 0) {
+                break;
+            }
+            switch (choose) {
+                case 1:
+                    SearchHistory.searchCompletedInvoiceByCode();
+                    break;
+                case 2:
+                    SearchHistory.searchCompletedInvoiceByReturn();
+                    break;
+                case 3:
+                    SearchHistory.searchCompletedInvoiceByRepair();
+                    break;
+                case 4:
+                    SearchHistory.searchAll(DataBase.completedInvoiceList);
+                    break;
+            }
+        }
+    }
+
+    private void showSearchRepairProduct() {
         while (true) {
             System.out.println("1. Search By ID");
             System.out.println("2. Search All");
@@ -309,7 +347,7 @@ public class AdminService implements IService {
             }
             switch (choose) {
                 case 1:
-                    SearchHistory.searchProductById();
+                    SearchHistory.searchHistoryRepairProductByID();
                     break;
                 case 2:
                     SearchHistory.searchAll(DataBase.historyList);
@@ -317,6 +355,7 @@ public class AdminService implements IService {
             }
         }
     }
+
     // check lịch sử  Customer
     private void showSearchCustomer() {
         while (true) {

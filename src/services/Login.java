@@ -13,6 +13,7 @@ public class Login {
     // màn hình login chính
     public void showLogin() {
         while (true) {
+            System.out.println("========Weclom=====");
             System.out.println("Nhập tài khoản");
             String account = InputValue.getString();
             System.out.println("Nhập mật khẩu");

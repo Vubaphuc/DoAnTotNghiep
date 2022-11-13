@@ -1,13 +1,15 @@
 package model;
 
+import constants.StatusInvoice;
+
 import java.time.LocalDate;
 
 public class CompletedInvoice {
     private Invoice invoice;
-    private String status;
+    private StatusInvoice status;
     private LocalDate dayCompleted;
 
-    public CompletedInvoice(Invoice invoice, String status, LocalDate dayCompleted) {
+    public CompletedInvoice(Invoice invoice, StatusInvoice status, LocalDate dayCompleted) {
         this.invoice = invoice;
         this.status = status;
         this.dayCompleted = dayCompleted;
@@ -21,11 +23,11 @@ public class CompletedInvoice {
         this.invoice = invoice;
     }
 
-    public String getStatus() {
+    public StatusInvoice getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusInvoice status) {
         this.status = status;
     }
 

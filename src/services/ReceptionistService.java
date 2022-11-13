@@ -1,6 +1,7 @@
 package services;
 
 import constants.Status;
+import constants.StatusInvoice;
 import constants.Type;
 import database.DataBase;
 import model.*;
@@ -88,6 +89,7 @@ public class ReceptionistService {
         if (checkIDCustomer == false){
             Customer customer = new Customer(idCustomer, nameCustomer, address, phoneNumber);
             DataBase.customerList.add(customer);
+            System.out.println("Đã Nhập Thành Công ");
         }
     }
 
@@ -146,7 +148,7 @@ public class ReceptionistService {
     }
     // method thay đổi tên model
     private void changeNameModel() {
-        System.out.println("Nhập Mã Sản Phẩm cần xóa");
+        System.out.println("Nhập Mã Sản Phẩm");
         String idProduct = InputValue.getString();
         Iterator<Product> it = DataBase.productList.iterator();
         while (it.hasNext()) {
@@ -163,7 +165,7 @@ public class ReceptionistService {
     }
     // method sửa tên lỗi
     private void changeNameErrol() {
-        System.out.println("Nhập Mã Sản Phẩm cần xóa");
+        System.out.println("Nhập Mã Sản Phẩm");
         String idProduct = InputValue.getString();
         Iterator<Product> it = DataBase.productList.iterator();
         while (it.hasNext()) {
@@ -208,9 +210,10 @@ public class ReceptionistService {
             return;
         }
         if (checkIDProduct == false){
-            Product product = new Product(idProduct, nameModel, nameErrol);
-            DataBase.productList.add(product);
             LocalDate dateNow = LocalDate.now();
+            Product product = new Product(idProduct, nameModel, nameErrol,dateNow);
+            DataBase.productList.add(product);
+            System.out.println("Đã Nhập thành Công");
         }
     }
 
@@ -240,6 +243,7 @@ public class ReceptionistService {
                     showCreateInvoice();
                     break;
                 case 2:
+                    System.out.println("Hóa Đơn");
                     showGetInvoice();
                     break;
                 case 3:
@@ -258,10 +262,11 @@ public class ReceptionistService {
         String codeInvoice = getCodeInvoice();
         // lấy ra 1 hóa đơn theo Code hóa đơn nhập vào
         Invoice invoice = getInvoice(codeInvoice);
-        String statusInvoice = "Hoàn Thành";
+        StatusInvoice status = chooseStatusInvoice();
         LocalDate dayCompleted = LocalDate.now();
-        CompletedInvoice completedInvoice = new CompletedInvoice(invoice,statusInvoice,dayCompleted);
+        CompletedInvoice completedInvoice = new CompletedInvoice(invoice,status,dayCompleted);
         DataBase.completedInvoiceList.add(completedInvoice);
+        System.out.println("Đã thành Công");
     }
 
     // check Code Invoice có tồn tại hay không. cso trả về. không quay lại
@@ -315,6 +320,7 @@ public class ReceptionistService {
         Employee employee = DataBase.employee;
         Invoice invoice = new Invoice(codeInvoice, customer, product, amount, price, startDay, endDay, employee);
         DataBase.invoiceList.add(invoice);
+        System.out.println("Đã Tạo Thành Công");
     }
     // method lấy hóa đơn/in hóa đơn
     private void showGetInvoice() {
@@ -354,9 +360,11 @@ public class ReceptionistService {
     }
     // method chuyển sản phẩm lỗi sang nhân viên công đoạn sau để xử lý
     private void showTransferProduct() {
-        Product product = getByProduct();
+        System.out.println("Nhập ID Product");
+        String idProduct = InputValue.getString();
+        Product product = searchProduct(idProduct);
         if (product == null){
-            System.out.println("Không tìm mã sản phẩm nào");
+            System.out.println("Sản phẩm không tồn tại hoặc đã chuyển sang bộ phận khác");
             return;
         }
         Status status = Status.PENDING;
@@ -369,6 +377,18 @@ public class ReceptionistService {
         LocalDate dayInputRece = LocalDate.now();
         History history = new History(product, status, employeeRece, dayInputRece, employeeWIP);
         DataBase.historyList.add(history);
+        System.out.println("Đã chuyển Product thành công");
+        deteletDidTransferProduct(idProduct);
+    }
+
+    private void deteletDidTransferProduct(String idProduct) {
+        Iterator<Product> it = DataBase.productList.iterator();
+        while (it.hasNext()){
+            Product product = it.next();
+            if (product.getIdProduct().equals(idProduct)){
+                it.remove();
+            }
+        }
     }
 
     // lấy thông tin 1 nhân viên viên WIP
@@ -384,9 +404,7 @@ public class ReceptionistService {
     }
 
     // method lấy thông tin 1 sản phẩm
-    private Product searchProduct() {
-        System.out.println("Nhập ID sản phẩm");
-        String idProduct = InputValue.getString();
+    private Product searchProduct(String idProduct) {
         for (Product product : DataBase.productList) {
             if (product.getIdProduct().equals(idProduct)) {
                 return product;
@@ -541,29 +559,37 @@ public class ReceptionistService {
     // method hiển thị chức năng tìm kiếm lịch sử
     private void showSearchHistory() {
         while (true) {
-            System.out.println("1. Search history Product");
-            System.out.println("2. Search history Customer");
-            System.out.println("3. Search history Invoice");
+            System.out.println("1. Search history Sản Phẩm vẫn Đang Pending tại Lễ Tân");
+            System.out.println("2. Search History Repair Product");
+            System.out.println("3. Search history Customer");
+            System.out.println("4. Search history Invoice");
+            System.out.println("5. Search history Completed Invoice");
             System.out.println("0. Quay lại");
-            int choose = InputValue.getInt(1, 3);
+            int choose = InputValue.getInt(1, 5);
             if (choose == 0) {
                 break;
             }
             switch (choose) {
                 case 1:
-                    showSearchProduct();
+                    SearchHistory.searchAll(DataBase.productList);
                     break;
                 case 2:
-                    showSearchCustomer();
+                    showSearchRepairProduct();
                     break;
                 case 3:
-                    showSearchInvoice();
+                    showSearchCustomer();
+                    break;
+                case 4:
+                    showSearchPendingInvoice();
+                    break;
+                case 5:
+                    showSearchCompletedInvoice();
                     break;
             }
         }
     }
-    // methoa hiển thị chức năng tìm kiếm lịch sử của sản phẩm
-    private void showSearchProduct() {
+
+    private void showSearchRepairProduct() {
         while (true) {
             System.out.println("1. Search By ID");
             System.out.println("2. Search All");
@@ -574,16 +600,43 @@ public class ReceptionistService {
             }
             switch (choose) {
                 case 1:
-                    // tìm kiếm theo ID sản phẩm
-                    SearchHistory.searchProductById();
+                    SearchHistory.searchHistoryRepairProductByID();
                     break;
                 case 2:
-                    // in ra toàn bộ danh sách sản phẩm
                     SearchHistory.searchAll(DataBase.historyList);
                     break;
             }
         }
     }
+
+    private void showSearchCompletedInvoice() {
+        while (true) {
+            System.out.println("1. Search By Code Invoice");
+            System.out.println("2. Search By Return Invoice");
+            System.out.println("3. Search By Repair Invoice");
+            System.out.println("4. Search All");
+            System.out.println("0. Back");
+            int choose = InputValue.getInt(1, 4);
+            if (choose == 0) {
+                break;
+            }
+            switch (choose) {
+                case 1:
+                    SearchHistory.searchCompletedInvoiceByCode();
+                    break;
+                case 2:
+                    SearchHistory.searchCompletedInvoiceByReturn();
+                    break;
+                case 3:
+                    SearchHistory.searchCompletedInvoiceByRepair();
+                    break;
+                case 4:
+                    SearchHistory.searchAll(DataBase.completedInvoiceList);
+                    break;
+            }
+        }
+    }
+
     // method tìm  kiếm lịch sử khách hàng
     private void showSearchCustomer() {
         while (true) {
@@ -597,15 +650,12 @@ public class ReceptionistService {
             }
             switch (choose) {
                 case 1:
-                    // tìm theo ID khách hàng
                     searchCustomerByID();
                     break;
                 case 2:
-                    // tìm theo tên khách hàng
                     SearchHistory.searchCustomerByName();
                     break;
                 case 3:
-                    // in ra toàn bộ danh sách khách hàng
                     SearchHistory.searchAll(DataBase.customerList);
                     break;
             }
@@ -632,7 +682,7 @@ public class ReceptionistService {
         }
     }
     // method tìm kiếm hóa đơn
-    private void showSearchInvoice() {
+    private void showSearchPendingInvoice() {
         while (true) {
             System.out.println("1. Search By ID");
             System.out.println("2. Search All");
@@ -643,15 +693,31 @@ public class ReceptionistService {
             }
             switch (choose) {
                 case 1:
-                    // tìm theo mã hóa đơn
                     SearchHistory.searchInvoiceByID();
                     break;
                 case 2:
-                    // in toàn bộ danh sách hóa đơn
                     SearchHistory.searchAll(DataBase.invoiceList);
                     break;
             }
         }
+    }
+    // chọn trạng thái sản phẩm trả khác
+    private StatusInvoice chooseStatusInvoice() {
+        StatusInvoice status = null;
+        System.out.println("Chọn trạng thái sản phẩm");
+        System.out.println("1. REPAIR " +
+                "2. RETURN");
+
+        int choose = InputValue.getInt(1, 2);
+        switch (choose) {
+            case 1:
+                status = StatusInvoice.REPAIR;
+                break;
+            case 2:
+                status = StatusInvoice.RETURN;
+                break;
+        }
+        return status;
     }
 
 }

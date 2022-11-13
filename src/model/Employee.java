@@ -44,7 +44,6 @@ public class Employee {
     @Override
     public String toString() {
         System.out.printf("ID Nhân Viên: %-7s  -  Họ và Tên: %-24s  -  Loại: %-20s",idNhanVien,fullName,type + "\n");
-        System.out.println("----------------------------------------------------------------------------------------------------------------");
         return "";
     }
 }
