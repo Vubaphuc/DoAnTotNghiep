@@ -2,41 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a63e7aa-9134-407e-bd55-909e5085673c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DoAnTotNghiep.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/StatusInvoice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/Type.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/database/DataBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Account.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/CompletedInvoice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Customer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Employee.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/History.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Invoice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/InvoiceMaterial.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Material.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/run/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/AdminService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EmployeeFontService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EmployeePCBService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EmployeeSoftwareService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EmployeeWIPService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/EmployeeWareHouseSercive.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/IService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/Login.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/ManageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/ReceptionistService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/InputValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/SearchHistory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/validation/Authentication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/validation/Authorization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Invoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/EmployeeWIPService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/EmployeeWIPService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ReceptionistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ReceptionistService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/SearchHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SearchHistory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

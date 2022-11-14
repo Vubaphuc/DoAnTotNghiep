@@ -158,11 +158,11 @@ public class SearchHistory {
             return;
         }
         Iterator<Invoice> it = DataBase.invoiceList.iterator();
-        System.out.println("Nhap ID Customer:");
+        System.out.println("Nhap ID Customer");
         String idCustomer = InputValue.getString();
         while (it.hasNext()) {
             Invoice invoice = it.next();
-            if (idCustomer.equals(invoice.getCustomer().getIdCustomer())) {
+            if (invoice.getCustomer().getIdCustomer().equals(idCustomer)) {
                 System.out.println(invoice.toString());
                 return;
             }
@@ -251,5 +251,23 @@ public class SearchHistory {
             }
         }
         System.out.println("Không tìm thấy hóa đơn nào");
+    }
+
+    public static void searchNameCustomerByCodeInvoice() {
+        if (DataBase.invoiceList.isEmpty()){
+            System.out.println("Không có thông tin nào");
+            return;
+        }
+        Iterator<Invoice> it = DataBase.invoiceList.iterator();
+        System.out.println("Nhap Name Customer");
+        String nameCustomer = InputValue.getString();
+        while (it.hasNext()) {
+            Invoice invoice = it.next();
+            if (invoice.getCustomer().getNameCustomer().contains(nameCustomer)) {
+                System.out.println(invoice.toString());
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy khách hàng nào");
     }
 }

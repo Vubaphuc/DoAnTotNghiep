@@ -64,20 +64,18 @@ public class EmployeeWIPService implements IService {
                 String idEmployee = InputValue.getString();
                 Employee employeeFuncion = getEmployeeAfter(idEmployee);
                 if (employeeFuncion == null){
-                    System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
+                    System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên Fuction");
                     return;
                 }
                 LocalDate dayInput = LocalDate.now();
                 history.setDayInputWIP(dayInput);
                 history.setEmployeeFuncion(employeeFuncion);
-                System.out.println("Đã chuyển Product thành công");
+                System.out.println("Đã chuyển thành công");
+                return;
             }
             if (history.getProduct().getIdProduct().equals(idProduct) && history.getEmployeeFuncion() != null){
                 System.out.println("Sản phẩm đã được chia đến đội tiếp theo");
                 return;
-            }
-            if (!history.getProduct().getIdProduct().equals(idProduct)){
-                System.out.println("Không tìm thấy sản phẩm");
             }
         }
     }

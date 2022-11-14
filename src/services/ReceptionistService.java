@@ -305,22 +305,28 @@ public class ReceptionistService {
             System.out.println("Không tìm thấy mã khách nào");
             return;
         }
-        Product product = getByProduct();
+        System.out.println("Nhập mã Sản phẩm");
+        String idProduct = InputValue.getString();
+        Product product = getByProduct(idProduct);
         if (product == null){
             System.out.println("Không tìm thấy sản phẩm nào");
             return;
         }
-        System.out.println("Nhập số lượng");
-        int amount = InputValue.getInputInt();
-        System.out.println("Nhập số tiền sửa");
-        double price = InputValue.getInputDouble();
-        LocalDate startDay = LocalDate.now();
-        System.out.println("Nhập ngày trả");
-        LocalDate endDay = InputValue.getInputLocalDate();
-        Employee employee = DataBase.employee;
-        Invoice invoice = new Invoice(codeInvoice, customer, product, amount, price, startDay, endDay, employee);
-        DataBase.invoiceList.add(invoice);
-        System.out.println("Đã Tạo Thành Công");
+        String idKiemtra = kiemTraSanPhamDaTaoHoaDonCHua(idProduct);
+        if (idKiemtra != null ){
+            System.out.println("Sản Phẩm đã được tạo hóa đơn. Vui lòng lựa chọn sản phẩm khác");
+            return;
+        }
+        if (idKiemtra == null){
+            System.out.println("Nhập số tiền sửa");
+            double price = InputValue.getInputDouble();
+            LocalDate startDay = LocalDate.now();
+            LocalDate endDay = LocalDate.now().plusDays(7);
+            Employee employee = DataBase.employee;
+            Invoice invoice = new Invoice(codeInvoice, customer, product, price, startDay, endDay, employee);
+            DataBase.invoiceList.add(invoice);
+            System.out.println("Đã Tạo Thành Công");
+        }
     }
     // method lấy hóa đơn/in hóa đơn
     private void showGetInvoice() {
@@ -363,22 +369,38 @@ public class ReceptionistService {
         System.out.println("Nhập ID Product");
         String idProduct = InputValue.getString();
         Product product = searchProduct(idProduct);
-        if (product == null){
-            System.out.println("Sản phẩm không tồn tại hoặc đã chuyển sang bộ phận khác");
+        String idKiemTra = kiemTraSanPhamDaTaoHoaDonCHua(idProduct);
+        if (idKiemTra == null) {
+            System.out.println("Sản Phẩm chưa tạo hóa đơn. Vui Lòng tạo hóa đơn trước");
             return;
         }
-        Status status = Status.PENDING;
-        Employee employeeRece = DataBase.employee;
-        Employee employeeWIP = getEmployeeWIP();
-        if (employeeWIP == null){
-            System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
-            return;
+        if (idKiemTra != null){
+            if (product == null){
+                System.out.println("Sản phẩm không tồn tại hoặc đã chuyển sang bộ phận khác");
+                return;
+            }
+            Status status = Status.PENDING;
+            Employee employeeRece = DataBase.employee;
+            Employee employeeWIP = getEmployeeWIP();
+            if (employeeWIP == null){
+                System.out.println("Không tìm thấy nhân viên nào hoặc nhân viên không phải nhân viên WIP");
+                return;
+            }
+            LocalDate dayInputRece = LocalDate.now();
+            History history = new History(product, status, employeeRece, dayInputRece, employeeWIP);
+            DataBase.historyList.add(history);
+            System.out.println("Đã chuyển Product thành công");
+            deteletDidTransferProduct(idProduct);
         }
-        LocalDate dayInputRece = LocalDate.now();
-        History history = new History(product, status, employeeRece, dayInputRece, employeeWIP);
-        DataBase.historyList.add(history);
-        System.out.println("Đã chuyển Product thành công");
-        deteletDidTransferProduct(idProduct);
+    }
+
+    private String kiemTraSanPhamDaTaoHoaDonCHua(String idProduct) {
+        for (Invoice invoice : DataBase.invoiceList){
+            if (invoice.getProduct().getIdProduct().equals(idProduct)){
+                return invoice.getCustomer().getIdCustomer();
+            }
+        }
+        return null;
     }
 
     private void deteletDidTransferProduct(String idProduct) {
@@ -515,9 +537,7 @@ public class ReceptionistService {
         return codeInvoice;
     }
     // lấy ra thông tin 1 sản phẩm
-    private Product getByProduct() {
-        System.out.println("Nhập mã Sản phẩm");
-        String idProduct = InputValue.getString();
+    private Product getByProduct(String idProduct) {
         for (Product product : DataBase.productList) {
             if (product.getIdProduct().equals(idProduct)) {
                 return product;
@@ -653,7 +673,7 @@ public class ReceptionistService {
                     searchCustomerByID();
                     break;
                 case 2:
-                    SearchHistory.searchCustomerByName();
+                    searchCustomerByName();
                     break;
                 case 3:
                     SearchHistory.searchAll(DataBase.customerList);
@@ -665,7 +685,7 @@ public class ReceptionistService {
     private void searchCustomerByID(){
         while (true){
             System.out.println("1. Search By ID Customer");
-            System.out.println("2. Search By Code Invoice");
+            System.out.println("2. Search By ID CusTomer in Invocie");
             System.out.println("0. Quay Lại");
             int choose = InputValue.getInt(1, 2);
             if (choose == 0){
@@ -677,6 +697,25 @@ public class ReceptionistService {
                     break;
                 case 2:
                     SearchHistory.searchCustomerByCodeInvoice();
+                    break;
+            }
+        }
+    }
+    private void searchCustomerByName(){
+        while (true){
+            System.out.println("1. Search By Name Customer");
+            System.out.println("2. Search By Name CusTomer in Invocie");
+            System.out.println("0. Quay Lại");
+            int choose = InputValue.getInt(1, 2);
+            if (choose == 0){
+                break;
+            }
+            switch (choose){
+                case 1:
+                    SearchHistory.searchCustomerByID();
+                    break;
+                case 2:
+                    SearchHistory.searchNameCustomerByCodeInvoice();
                     break;
             }
         }

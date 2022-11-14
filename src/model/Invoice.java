@@ -8,17 +8,15 @@ public class Invoice {
     private String codeInvoive;
     private Customer customer;
     private Product product;
-    private int number;
     private double price;
     private LocalDate dateAdd;
     private LocalDate datePay;
     private Employee employee;
 
-    public Invoice(String codeInvoive, Customer customer, Product product, int number, double price, LocalDate dateAdd, LocalDate datePay, Employee employee) {
+    public Invoice(String codeInvoive, Customer customer, Product product, double price, LocalDate dateAdd, LocalDate datePay, Employee employee) {
         this.codeInvoive = codeInvoive;
         this.customer = customer;
         this.product = product;
-        this.number = number;
         this.price = price;
         this.dateAdd = dateAdd;
         this.datePay = datePay;
@@ -48,14 +46,6 @@ public class Invoice {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public double getPrice() {
@@ -92,8 +82,8 @@ public class Invoice {
 
     @Override
     public String toString() {
-        System.out.printf("Mã hoá đơn: %-10s -  %-20s" + '\n' + "%-20s" +'\n' + "Số lượng: %-11s  -  Giá: %-30s  -  " +
-                        "Ngày nhận máy: %-21s  -  Ngày trả máy: %-15s" + '\n'+ "Nhân Viên Tạo Hóa ĐƠn: %s" + '\n',codeInvoive,customer,product,number,price,dateAdd
+        System.out.printf("Mã hoá đơn: %-10s -  %-20s" + '\n' + "%-20s" +'\n' + "Giá: %-30s  -  " +
+                        "Ngày nhận máy: %-21s  -  Ngày trả máy: %-15s" + '\n'+ "Nhân Viên Tạo Hóa ĐƠn: %s" + '\n',codeInvoive,customer,product,price,dateAdd
                 ,datePay,employee + "\n");
         return "";
     }
